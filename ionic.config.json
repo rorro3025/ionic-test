@@ -1,0 +1,7 @@
+{
+  "name": "react-spring",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
