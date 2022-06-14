@@ -1,7 +1,10 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
+import CustomersList from "../components/CustomersList"
+import FavoriteFeeed from '../components/FavoritesFeed'
+import UserForm from '../components/UserForm';
 import './Page.css';
+
 
 const Page: React.FC = () => {
 
@@ -24,7 +27,9 @@ const Page: React.FC = () => {
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name={name} />
+        {name === "Clients" ? <CustomersList /> : null}
+        {name === "Favorites" ? <FavoriteFeeed /> : null}
+        {name === "User" ? <UserForm /> : null}
       </IonContent>
     </IonPage>
   );
