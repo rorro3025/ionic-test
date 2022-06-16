@@ -1,14 +1,20 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useParams } from 'react-router';
-import CustomersList from "../components/CustomersList"
-import FavoriteFeeed from '../components/FavoritesFeed'
-import UserForm from '../components/UserForm';
-import './Page.css';
-
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import { useParams } from "react-router";
+import CustomersList from "../components/CustomersList";
+import FavoriteFeeed from "../components/FavoritesFeed";
+import UserForm from "../components/UserForm";
+import "./Page.css";
 
 const Page: React.FC = () => {
-
-  const { name } = useParams<{ name: string; }>();
+  const { name, id } = useParams<{ name: string; id: string }>();
 
   return (
     <IonPage>
@@ -29,7 +35,7 @@ const Page: React.FC = () => {
         </IonHeader>
         {name === "Clients" ? <CustomersList /> : null}
         {name === "Favorites" ? <FavoriteFeeed /> : null}
-        {name === "User" ? <UserForm /> : null}
+        {name === "User" ? <UserForm id={id} /> : null}
       </IonContent>
     </IonPage>
   );
