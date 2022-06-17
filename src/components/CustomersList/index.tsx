@@ -19,19 +19,18 @@ import { Customer } from "../../models/interfaces";
 import { useHistory } from "react-router";
 
 export default function List() {
-  const {push} = useHistory();
+  const { push } = useHistory();
   const [list, setList] = useState<Customer[]>([]);
   const handleNewCustomer = () => push("/page/User");
+  const handleUpdateCustomer = (id: number | undefined) => push("/page/User/" + id)
   const getData = async () => {
     let response = await fetch("http://localhost:8080/api/customers");
     let data = await response.json();
-    console.log(data);
     setList(data);
   };
   useEffect(() => {
     getData().catch(null);
   }, []);
-
   return (
     <IonContent>
       <IonItem>
@@ -42,7 +41,7 @@ export default function List() {
       <IonList>
         {list !== [] ? (
           list.map((item: Customer) => (
-            <IonItem key={item.id} onClick={() => console.log(item.id)} button>
+            <IonItem key={item.id} onClick={() => handleUpdateCustomer(item.id)} button>
               <IonThumbnail slot="start">
                 <img src="assets/userD.png" alt="user default" />
               </IonThumbnail>
@@ -104,7 +103,7 @@ export default function List() {
             <IonLabel>Item</IonLabel>
           </IonItem>
           <IonItemOptions side="end">
-            <IonItemOption onClick={() => {}}>Unread</IonItemOption>
+            <IonItemOption onClick={() => { }}>Unread</IonItemOption>
           </IonItemOptions>
         </IonItemSliding>
 
@@ -113,7 +112,7 @@ export default function List() {
             <IonLabel>Item</IonLabel>
           </IonItem>
           <IonItemOptions side="end">
-            <IonItemOption onClick={() => {}}>Unread</IonItemOption>
+            <IonItemOption onClick={() => { }}>Unread</IonItemOption>
           </IonItemOptions>
         </IonItemSliding>
       </IonList>

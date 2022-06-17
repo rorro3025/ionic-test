@@ -1,29 +1,31 @@
-interface mutualInfo{
+interface mutualInfo {
     id?: number,
-    address:string,
-    city:string,
-    state:string,
-    zip:number | string,  
-    phone:string,
-} 
-
-interface Outlet extends mutualInfo{}
-interface User {
-id?:number,
-name:string,
-email:string,
-password:string,
-createdAt?:Date
+    address: string | undefined,
+    city: string | undefined,
+    state: string | undefined,
+    zip: number | string | undefined
+    ,
+    phone: string | undefined
+    ,
 }
 
-interface Customer extends mutualInfo{
-    name:string
+interface Outlet extends mutualInfo { }
+interface User {
+    id?: number,
+    name: string,
+    email: string,
+    password: string,
+    createdAt?: Date
+}
+
+interface Customer extends mutualInfo {
+    name: string | undefined
 }
 interface Employee {
-    id?:number,
-    name:string,
-    outletId:number,
-    outletCity?:string
+    id?: number,
+    name: string,
+    outletId: number,
+    outletCity?: string
 }
 
-export type {User,Customer,Employee,Outlet}
+export type { User, Customer, Employee, Outlet }
