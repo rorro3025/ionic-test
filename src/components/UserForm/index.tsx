@@ -8,14 +8,14 @@ import {
   IonList,
 } from "@ionic/react";
 import { Customer } from "../../models/interfaces";
-import { Console } from "console";
+import { useHistory } from "react-router";
 
 interface Props {
   id?: string;
 }
 
 export default function UserForm({ id }: Props) {
-
+  const { push } = useHistory()
   let initialState: Customer = {
     name: "",
     address: "",
@@ -26,21 +26,35 @@ export default function UserForm({ id }: Props) {
   };
 
   const [text, setText] = useState<Customer>(initialState);
+
   const handleSubmit = () => {
-    console.log(text)
+    saveAndUpdateCustomer().then(() => { setText(initialState); push("/page/Clients") })
   };
+
   const getUser = async () => {
     let res = await fetch(`http://localhost:8080/api/customers/${id}`)
     let user = await res.json()
-    console.log(user)
     setText(user)
   }
+
+  const saveAndUpdateCustomer = async () => {
+    await fetch("http://localhost:8080/api/customers", {
+      method: "POST",
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify(text)
+    })
+  }
+
   useEffect(() => {
     if (id) getUser().catch(e => console.log(e))
   }, [])
+
   useEffect(() => {
     if (id) getUser().catch(e => console.log(e))
   }, [id])
+
   return (
     <IonContent>
       <IonList>
@@ -63,11 +77,11 @@ export default function UserForm({ id }: Props) {
         </IonItem>
         <IonItem>
           <IonLabel position="fixed">Zip</IonLabel>
-          <IonInput value={text.zip} onIonChange={({ detail }) => setText({ ...text, zip: detail.value?.toString() })}></IonInput>
+          <IonInput value={text.zip} type="number" onIonChange={({ detail }) => setText({ ...text, zip: Number(detail.value) })}></IonInput>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">Phone</IonLabel>
-          <IonInput value={text.phone} onIonChange={({ detail }) => setText({ ...text, phone: detail.value?.toString() })}></IonInput>
+          <IonInput value={text.phone} type="number" onIonChange={({ detail }) => setText({ ...text, phone: detail.value?.toString() })}></IonInput>
         </IonItem>
         <IonItem>
           <IonButton
@@ -77,7 +91,7 @@ export default function UserForm({ id }: Props) {
             size="large"
             onClick={handleSubmit}
           >
-            Save
+            {id ? "Update" : "Save"}
           </IonButton>
         </IonItem>
       </IonList>

@@ -17,20 +17,32 @@ import {
 } from "@ionic/react";
 import { Customer } from "../../models/interfaces";
 import { useHistory } from "react-router";
+import { getAllCustomers, deleteCustomer } from "./controller";
 
 export default function List() {
   const { push } = useHistory();
   const [list, setList] = useState<Customer[]>([]);
   const handleNewCustomer = () => push("/page/User");
   const handleUpdateCustomer = (id: number | undefined) => push("/page/User/" + id)
+  // ! use of an imported function 
   const getData = async () => {
-    let response = await fetch("http://localhost:8080/api/customers");
-    let data = await response.json();
+    let data = await getAllCustomers()
     setList(data);
   };
+  // ! function for delete customer
+  const handleDelete = async (id: number | undefined) => {
+    await deleteCustomer(id)
+    getData()
+  }
+
   useEffect(() => {
     getData().catch(null);
   }, []);
+
+  useEffect(() => {
+    getData().catch(null)
+  }, [list])
+
   return (
     <IonContent>
       <IonItem>
@@ -41,7 +53,7 @@ export default function List() {
       <IonList>
         {list !== [] ? (
           list.map((item: Customer) => (
-            <IonItem key={item.id} onClick={() => handleUpdateCustomer(item.id)} button>
+            <IonItem key={item.id} button>
               <IonThumbnail slot="start">
                 <img src="assets/userD.png" alt="user default" />
               </IonThumbnail>
@@ -51,10 +63,10 @@ export default function List() {
                   {item.city} - {item.phone}
                 </p>
               </IonLabel>
-              <IonButton color="success" fill="outline" slot="end">
+              <IonButton color="success" fill="outline" slot="end" onClick={() => handleUpdateCustomer(item.id)}>
                 Update
               </IonButton>
-              <IonButton color="danger" fill="outline" slot="end">
+              <IonButton color="danger" fill="outline" slot="end" onClick={() => handleDelete(item.id)}>
                 Delete
               </IonButton>
             </IonItem>
